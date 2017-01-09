@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
+import org.craftedsw.tripservicekata.exception.UserNotLoggedInException;
 import org.craftedsw.tripservicekata.user.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +24,12 @@ public class TripServiceTest {
 	public void should_return_trips_for_valid_user(){
 		assertThat(tripService.getTripsByUser(createUser()).size(), is(1));
 	}
+	
+	@Test(expected=UserNotLoggedInException.class)
+	public void should_throw_exception_for_not_logged_user(){
+		TripServiceNotLoggedIn tripServiceNotLoggedIn = new TripServiceNotLoggedIn();
+		tripServiceNotLoggedIn.getTripsByUser(createUser());
+	}
 
 	private User createUser() {
 		User user = new User();		
@@ -40,6 +47,14 @@ public class TripServiceTest {
 		@Override
 		protected User getLoggedUser() {
 			return friend;
+		}
+	}
+	
+	private class TripServiceNotLoggedIn extends TripService{
+				
+		@Override
+		protected User getLoggedUser() {
+			return null;
 		}
 	}
 	
