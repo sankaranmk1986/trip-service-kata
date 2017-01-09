@@ -8,7 +8,7 @@ public class TripDAOTest {
 	
 	@Test(expected=CollaboratorCallException.class)
 	public void should_throw_exception_if_call_findByUser(){
-		TripDAO.findTripsByUser(new User());
+		new TripDAO().findTripsByUser(new User());
 	}
 
 }

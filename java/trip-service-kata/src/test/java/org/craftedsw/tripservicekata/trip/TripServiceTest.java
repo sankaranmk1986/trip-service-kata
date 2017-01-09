@@ -9,14 +9,18 @@ import org.craftedsw.tripservicekata.exception.UserNotLoggedInException;
 import org.craftedsw.tripservicekata.user.User;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 public class TripServiceTest {
 	
 	private TripServiceMock tripService;
 	private User friend;
 	
+	@Mock
+	private TripDAO tripDAO;
+	
 	@Before
 	public void setup(){
-		tripService = new TripServiceMock();
+		tripService = new TripServiceMock(tripDAO);
 		friend = new User();
 	}
 	
@@ -27,7 +31,7 @@ public class TripServiceTest {
 	
 	@Test(expected=UserNotLoggedInException.class)
 	public void should_throw_exception_for_not_logged_user(){
-		TripServiceNotLoggedIn tripServiceNotLoggedIn = new TripServiceNotLoggedIn();
+		TripServiceNotLoggedIn tripServiceNotLoggedIn = new TripServiceNotLoggedIn(tripDAO);
 		tripServiceNotLoggedIn.getTripsByUser(createUser());
 	}
 
@@ -39,6 +43,10 @@ public class TripServiceTest {
 	}
 		
 	private class TripServiceMock extends TripService{
+		public TripServiceMock(TripDAO tripDAO) {
+			super(tripDAO);
+		}
+
 		@Override
 		protected List<Trip> findTripsByUser(User user) {
 			return asList(new Trip());
@@ -52,6 +60,10 @@ public class TripServiceTest {
 	
 	private class TripServiceNotLoggedIn extends TripService{
 				
+		public TripServiceNotLoggedIn(TripDAO tripDAO) {
+			super(tripDAO);
+		}
+
 		@Override
 		protected User getLoggedUser() {
 			return null;
