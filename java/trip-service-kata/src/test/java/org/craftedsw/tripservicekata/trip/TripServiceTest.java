@@ -66,7 +66,7 @@ public class TripServiceTest {
 
 		@Override
 		protected User getLoggedUser() {
-			return null;
+			throw new UserNotLoggedInException();
 		}
 	}
 	
