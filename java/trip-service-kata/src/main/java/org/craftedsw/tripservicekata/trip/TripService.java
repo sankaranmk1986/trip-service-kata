@@ -44,7 +44,7 @@ public class TripService {
 		return tripDAO.findTripsByUser(user);
 	}
 
-	protected User getLoggedUser() {
+	protected User getLoggedUser() throws UserNotLoggedInException{
 		return UserSession.getInstance().getLoggedUser();
 	}
 	
